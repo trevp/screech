@@ -137,6 +137,9 @@ impl <P: HandshakePattern, D: Dh, C: Cipher, H: Hash, R: Random> HandshakeState<
         let mut premsg_pattern_r = [Token::Empty; 2];
         let mut msg_patterns = [[Token::Empty; 8]; 5];
         P::get(&mut premsg_pattern_i, &mut premsg_pattern_r, &mut msg_patterns);
+
+        symmetricstate.mix_hash(prologue);
+
         if initiator {
             for token in &premsg_pattern_i {
                 match *token {
@@ -172,8 +175,6 @@ impl <P: HandshakePattern, D: Dh, C: Cipher, H: Hash, R: Random> HandshakeState<
                 }
             }
         }
-
-        symmetricstate.mix_hash(prologue);
 
         HandshakeState{
             symmetricstate: symmetricstate, 
