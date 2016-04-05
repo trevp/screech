@@ -53,11 +53,11 @@ pub struct HashBLAKE2b {
 impl DhType for Dh25519 {
 
     fn name(&self, out : &mut [u8]) -> usize { 
-        copy_memory("25519".as_bytes(), out)
+        copy_memory(b"25519", out)
     }
 
     fn pub_len(&self) -> usize {
-        return 32;
+        32
     }
 
     fn set(&mut self, privkey: &[u8], pubkey: &[u8]) {
@@ -88,7 +88,7 @@ impl DhType for Dh25519 {
 impl CipherType for CipherAESGCM {
 
     fn name(&self, out : &mut [u8]) -> usize { 
-        copy_memory("AESGCM".as_bytes(), out)
+        copy_memory(b"AESGCM", out)
     }
 
     fn set(&mut self, key: &[u8]) {
@@ -119,7 +119,7 @@ impl CipherType for CipherAESGCM {
 impl CipherType for CipherChaChaPoly {
 
     fn name(&self, out : &mut [u8]) -> usize { 
-        copy_memory("ChaChaPoly".as_bytes(), out)
+        copy_memory(b"ChaChaPoly", out)
     }
 
     fn set(&mut self, key: &[u8]) {
@@ -189,15 +189,15 @@ impl Default for HashSHA256 {
 impl HashType for HashSHA256 {
 
     fn block_len(&self) -> usize {
-        return 64;
+        64
     }
 
     fn hash_len(&self) -> usize {
-        return 32;
+        32
     }
 
     fn name(&self, out : &mut [u8]) -> usize { 
-        copy_memory("SHA256".as_bytes(), out)
+        copy_memory(b"SHA256", out)
     }
 
     fn reset(&mut self) {
@@ -222,15 +222,15 @@ impl Default for HashSHA512 {
 impl HashType for HashSHA512 {
 
     fn name(&self, out: &mut [u8]) -> usize { 
-        copy_memory("SHA512".as_bytes(), out)
+        copy_memory(b"SHA512", out)
     }
 
     fn block_len(&self) -> usize {
-        return 128;
+        128
     }
 
     fn hash_len(&self) -> usize {
-        return 64;
+        64
     }
 
     fn reset(&mut self) {
@@ -255,15 +255,15 @@ impl Default for HashBLAKE2b {
 impl HashType for HashBLAKE2b {
 
     fn name(&self, out : &mut [u8]) -> usize { 
-        copy_memory("BLAKE2b".as_bytes(), out)
+        copy_memory(b"BLAKE2b", out)
     }
 
     fn block_len(&self) -> usize {
-        return 128;
+        128
     }
 
     fn hash_len(&self) -> usize {
-        return 64;
+        64
     }
 
     fn reset(&mut self) {

@@ -40,19 +40,19 @@ pub trait HashType {
         assert!(key.len() <= self.block_len());
         let block_len = self.block_len();
         let hash_len = self.hash_len();
-        let mut ipad = [0x36u8; MAXBLOCKLEN];
-        let mut opad = [0x5cu8; MAXBLOCKLEN];
+        let mut i_pad = [0x36u8; MAXBLOCKLEN];
+        let mut o_pad = [0x5cu8; MAXBLOCKLEN];
         for count in 0..key.len() {
-            ipad[count] ^= key[count];
-            opad[count] ^= key[count];
+            i_pad[count] ^= key[count];
+            o_pad[count] ^= key[count];
         }
         self.reset();
-        self.input(&ipad[..block_len]);
+        self.input(&i_pad[..block_len]);
         self.input(data);
         let mut inner_output = [0u8; MAXHASHLEN];
         self.result(&mut inner_output);
         self.reset();
-        self.input(&opad[..block_len]);
+        self.input(&o_pad[..block_len]);
         self.input(&inner_output[..hash_len]);
         self.result(out);
     }
