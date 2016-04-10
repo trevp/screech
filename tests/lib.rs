@@ -240,5 +240,35 @@ fn test1() {
 
         //println!("{}", buffer_msg[..52].to_hex());
         assert!(buffer_msg[..52].to_hex() == "5869aff450549732cbaaed5e5df9b30a6da31cb0e5742bad5ad4a1a768f1a67b7555a94199d0ce2972e0861b06c2152419a278de");
-    } 
+    }
+}
+
+#[test]
+#[should_panic]
+fn test2(){
+    {
+        // Test the misuse of a handshake pattern. This is reciever only pattern for Noise_N. Should panic user tries to send a message
+        let mut static_r:Dh25519 = Default::default();
+
+        let mut reciever : HandshakeCryptoOwner<RandomInc, Dh25519, CipherAESGCM, HashSHA256> = Default::default();
+        static_r.generate(&mut reciever.rng);
+        reciever.set_s(static_r);
+
+        let mut cipherstate1_r : CipherState<CipherAESGCM> = Default::default();
+        let mut cipherstate2_r : CipherState<CipherAESGCM> = Default::default();
+
+        let mut h_r = HandshakeState::new_from_owner(&mut reciever,
+                                                   false,
+                                                   HandshakePattern::N,
+                                                   &[0u8; 0],
+                                                   None,
+                                                   &mut cipherstate1_r,
+                                                   &mut cipherstate2_r);
+
+
+
+
+        let mut buffer = [0u8; 200];
+        h_r.write_message("abc".as_bytes(), &mut buffer);
+}
 }
