@@ -47,7 +47,7 @@ impl<'a> HandshakeState<'a> {
             &mut owner.rng,
             &mut owner.cipherstate,
             &mut owner.hasher,
-            &mut owner.s, &mut owner.e, 
+            &owner.s, &mut owner.e, 
             &mut owner.rs[..dhlen], 
             &mut owner.re[..dhlen],
             owner.has_s, owner.has_e, owner.has_rs, owner.has_re,
@@ -105,10 +105,10 @@ impl<'a> HandshakeState<'a> {
         }
 
         if let Some(_) = optional_preshared_key {
-            copy_memory("NoisePSK_".as_bytes(), &mut handshake_name);
+            copy_memory(b"NoisePSK_", &mut handshake_name);
             name_len = 9;
         } else {
-            copy_memory("Noise_".as_bytes(), &mut handshake_name);
+            copy_memory(b"Noise_", &mut handshake_name);
             name_len = 6;
         }
         name_len += resolve_handshake_pattern(handshake_pattern,
@@ -116,13 +116,13 @@ impl<'a> HandshakeState<'a> {
                                               &mut premsg_pattern_i, 
                                               &mut premsg_pattern_r, 
                                               &mut message_patterns);
-        handshake_name[name_len] = '_' as u8;
+        handshake_name[name_len] = b'_';
         name_len += 1;
         name_len += s.name(&mut handshake_name[name_len..]);
-        handshake_name[name_len] = '_' as u8;
+        handshake_name[name_len] = b'_';
         name_len += 1;
         name_len += cipherstate.name(&mut handshake_name[name_len..]);
-        handshake_name[name_len] = '_' as u8;
+        handshake_name[name_len] = b'_';
         name_len += 1;
         name_len += hasher.name(&mut handshake_name[name_len..]);
 
@@ -266,7 +266,7 @@ impl<'a> HandshakeState<'a> {
     pub fn read_message(&mut self, 
                         message: &[u8], 
                         payload: &mut [u8]) -> Result<(usize, bool), NoiseError> { 
-        assert!(self.my_turn_to_send == false);
+        assert!(!self.my_turn_to_send);
         assert!(message.len() <= MAXMSGLEN);
 
         let tokens = self.message_patterns[self.message_index];
