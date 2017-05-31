@@ -1,4 +1,10 @@
 
+# WARNING!
+
+Screech is out of date, not being maintained, and should not be used.
+
+See https://noiseprotocol.org for more current libraries.
+
 # Screech
 
 Implementation of the [Noise Protocol
